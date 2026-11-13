@@ -24,7 +24,7 @@ try {
     },
     logError: () => { console.error('Zahteva ni uspela. Preverite povezavo z Auth in bazo ter pripravo sheme.'); },
   });
-  const server = app.listen(config.port, '127.0.0.1', () => {
+  const server = app.listen(config.port, process.env.HOST ?? '127.0.0.1', () => {
     console.log(`AutoCheck API: http://localhost:${config.port}`);
   });
   server.on('error', () => { console.error('Strežnika ni mogoče zagnati; preverite, ali so vrata prosta.'); process.exitCode = 1; });

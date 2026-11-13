@@ -36,10 +36,10 @@ export function AdminDashboard({ token }: { token: string }) {
       <p className="muted">Termin traja 30 minut. Datum in ura sta v časovnem pasu Europe/Ljubljana. Objavljenih terminov v MVP ni mogoče spreminjati ali umakniti.</p>
       <form onSubmit={publish}><div className="field"><label htmlFor="slot-start">Začetek termina</label><input id="slot-start" type="datetime-local" required value={start} onChange={e => setStart(e.target.value)} disabled={busy} /></div>
         {formError && <p role="alert" className="alert error">{formError}</p>}{notice && <p role="status" className="alert success">{notice}</p>}
-        <button className="primary" disabled={busy}>{busy ? 'Objavljanje …' : 'Objavi termin'}</button>
+        <button type="submit" className="primary" disabled={busy}>{busy ? 'Objavljanje …' : 'Objavi termin'}</button>
       </form>
     </section>
-    <div className="section-heading"><h2>Objavljeni termini</h2><button className="secondary" disabled={loading} onClick={() => setRevision(value => value + 1)}>Osveži termine</button></div>
+    <div className="section-heading"><h2>Objavljeni termini</h2><button type="button" className="secondary" disabled={loading} onClick={() => setRevision(value => value + 1)}>Osveži termine</button></div>
     {error && <p role="alert" className="alert error">{error}</p>}
     {loading ? <p role="status">Nalaganje evidenc …</p> : !error && <>
       {slots.length ? <ul className="slot-list">{slots.map(slot => <li className="panel" key={slot.id}><span>{dateTime(slot.startsAt)}–{time(slot.endsAt)}</span><span className="badge">{slot.available ? 'Prost' : 'Ni na voljo'}</span></li>)}</ul> : <p className="panel">Ni objavljenih terminov.</p>}

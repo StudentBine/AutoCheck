@@ -48,8 +48,8 @@ export function InspectionEditor({ id, token, onBack, onDirty }: { id: string; t
   }
   const readOnly = data?.status === 'COMPLETED';
   return <section className="dashboard">
-    <button className="secondary" disabled={busy} onClick={onBack}>Nazaj na razpored</button>
-    {!data ? error ? <><p role="alert" className="alert error">{error}</p><button onClick={() => setRetry(v => v + 1)}>Poskusi ponovno</button></> : <p role="status">Nalaganje pregleda …</p> : <>
+    <button type="button" className="secondary" disabled={busy} onClick={onBack}>Nazaj na razpored</button>
+    {!data ? error ? <><p role="alert" className="alert error">{error}</p><button type="button" onClick={() => setRetry(v => v + 1)}>Poskusi ponovno</button></> : <p role="status">Nalaganje pregleda …</p> : <>
       <h2>Pregled · {data.registrationNumber}</h2><p>{data.manufacturer} {data.model} · VIN {data.vin}</p>
       <p className="muted">Termin: {dateTime(data.startsAt)}–{time(data.endsAt)} · Začetek pregleda: {dateTime(data.startedAt)}</p>
       {readOnly ? <p className="alert success">Zaključen pregled · {data.finalResult} · {data.completedAt && dateTime(data.completedAt)}. Podatki so samo za branje.</p> : <>
@@ -72,16 +72,16 @@ export function InspectionEditor({ id, token, onBack, onDirty }: { id: string; t
           {item.result === 'FAIL' && <div className="checklist-defects">{(item.defects ?? []).map((defect, di) => <div className="checklist-defect" key={defect.id}>
             <div className="field"><label htmlFor={`description-${defect.id}`}>Opis napake · {item.category}{di ? ` (${di + 1})` : ''}</label><textarea id={`description-${defect.id}`} maxLength={2000} value={defect.description} placeholder="Kaj ni v redu?" onChange={e => changeItem(item.id, { defects: item.defects!.map((d, n) => n === di ? { ...d, description: e.target.value } : d) })} /></div>
             <div className="field"><label htmlFor={`severity-${defect.id}`}>Resnost · {item.category}{di ? ` (${di + 1})` : ''}</label><select id={`severity-${defect.id}`} value={defect.severity} onChange={e => changeItem(item.id, { defects: item.defects!.map((d, n) => n === di ? { ...d, severity: e.target.value as 'MINOR' | 'MAJOR' } : d) })}><option value="MINOR">Minor – manjša napaka</option><option value="MAJOR">Major – večja napaka</option></select></div>
-            {!readOnly && (item.defects?.length ?? 0) > 1 && <button className="text-button" onClick={() => changeItem(item.id, { defects: item.defects!.filter((_, n) => n !== di) })}>Odstrani napako {di + 1}</button>}
-          </div>)}{!readOnly && <button className="text-button" onClick={() => changeItem(item.id, { defects: [...(item.defects ?? []), { id: crypto.randomUUID(), description: '', severity: 'MINOR' }] })}>Dodaj še eno napako</button>}</div>}
+            {!readOnly && (item.defects?.length ?? 0) > 1 && <button type="button" className="text-button" onClick={() => changeItem(item.id, { defects: item.defects!.filter((_, n) => n !== di) })}>Odstrani napako {di + 1}</button>}
+          </div>)}{!readOnly && <button type="button" className="text-button" onClick={() => changeItem(item.id, { defects: [...(item.defects ?? []), { id: crypto.randomUUID(), description: '', severity: 'MINOR' }] })}>Dodaj še eno napako</button>}</div>}
           {item.notes && <p className="muted">Prejšnja opomba: {item.notes}</p>}
         </section>)}</div>
         <div className="field inspection-notes"><label htmlFor="inspection-notes">Splošna opomba pregleda (neobvezno)</label><textarea id="inspection-notes" maxLength={2000} value={data.notes ?? ''} onChange={e => { setNotice(''); setData({ ...data, notes: e.target.value }); }} /></div>
       </fieldset>
       {error && <p role="alert" className="alert error">{error}</p>}{notice && <p role="status" className="alert success">{notice}</p>}
       {!readOnly && <div className="inspection-savebar"><span className="muted">{busy ? 'Shranjevanje …' : dirty ? 'Spremembe še niso shranjene.' : 'Spremembe so shranjene.'}</span><div className="actions">
-        <button className="secondary" disabled={busy || !dirty || invalid.length > 0} onClick={() => void save(false)}>Shrani pregled</button>
-        <button className="primary" disabled={busy || !canComplete} onClick={() => void save(true)}>Shrani in zaključi</button>
+        <button type="button" className="secondary" disabled={busy || !dirty || invalid.length > 0} onClick={() => void save(false)}>Shrani pregled</button>
+        <button type="button" className="primary" disabled={busy || !canComplete} onClick={() => void save(true)}>Shrani in zaključi</button>
       </div></div>}
     </>}
   </section>;

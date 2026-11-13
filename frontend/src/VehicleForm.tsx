@@ -37,7 +37,7 @@ export function VehicleForm({ token, vehicle, onSaved, onCancel }: { token: stri
           aria-invalid={field === input.key} aria-describedby={field === input.key ? 'vehicle-error' : undefined} />
       </div>)}</div>
       {error && <p role="alert" id="vehicle-error" className="alert error">{error}</p>}
-      <div className="actions"><button className="primary" disabled={busy}>{busy ? 'Shranjevanje …' : 'Shrani vozilo'}</button><button type="button" className="secondary" disabled={busy} onClick={onCancel}>Prekliči</button></div>
+      <div className="actions"><button type="submit" className="primary" disabled={busy}>{busy ? 'Shranjevanje …' : 'Shrani vozilo'}</button><button type="button" className="secondary" disabled={busy} onClick={onCancel}>Prekliči</button></div>
     </form>
   </section>;
 }

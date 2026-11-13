@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, afterEach, expect, it, vi } from 'vitest';
 import { InspectorDashboard, type Inspection, type ScheduleRow } from './InspectorDashboard';
@@ -90,7 +90,7 @@ it('shows missing assessments then saves unsaved edits before completing without
 });
 it('keeps draft on failed save and never calls complete', async () => {
   vi.spyOn(window, 'confirm').mockReturnValue(true);
-  data.items.forEach(item => item.result = 'PASS');
+  data.items.forEach(item => { item.result = 'PASS'; });
   const original = fetchMock.getMockImplementation() as (url: string, options: { method?: string; body?: string }) => Promise<ReturnType<typeof response>>;
   fetchMock.mockImplementation((url, options) => url.endsWith('/checklist') ? response({ error: 'Shranjevanje ni uspelo.' }, 503) : original(url, options));
   const user = await openEditor(); await user.type(screen.getByLabelText('Splošna opomba pregleda (neobvezno)'), 'Ohrani');
@@ -100,7 +100,7 @@ it('keeps draft on failed save and never calls complete', async () => {
   expect(fetchMock.mock.calls.some(([url]) => url.endsWith('/complete'))).toBe(false);
 });
 it('retains saved editable findings when completion is rejected', async () => {
-  vi.spyOn(window, 'confirm').mockReturnValue(true); data.items.forEach(item => item.result = 'PASS');
+  vi.spyOn(window, 'confirm').mockReturnValue(true); data.items.forEach(item => { item.result = 'PASS'; });
   const original = fetchMock.getMockImplementation() as (url: string, options: { method?: string; body?: string }) => Promise<ReturnType<typeof response>>;
   fetchMock.mockImplementation((url, options) => url.endsWith('/complete') ? response({ error: 'Pregled ni popoln.' }, 409) : original(url, options));
   const user = await openEditor(); await user.click(screen.getByRole('button', { name: 'Shrani in zaključi' }));

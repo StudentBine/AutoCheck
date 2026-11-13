@@ -12,7 +12,8 @@
     "start": "node dist/server.js",
     "test": "tsx --test test/auth.test.ts test/domain.test.ts test/inspections.test.ts",
     "test:live": "tsx --test test/live-domain.test.ts",
-    "test:live:inspections": "tsx --test test/live-inspections.test.ts"
+    "test:live:inspections": "tsx --test test/live-inspections.test.ts",
+    "lint": "biome lint ."
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",
@@ -21,6 +22,7 @@
     "pg": "^8.23.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.7",
     "@electric-sql/pglite": "^0.5.15",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.6",

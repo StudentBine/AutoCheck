@@ -56,7 +56,7 @@ export function InspectorDashboard({ token, onDirtyChange }: { token: string; on
     setDirty(false); setSelected(null);
   }} />;
   return <section className="dashboard" aria-label="Rezervacije postaje">
-    <div className="section-heading"><h2>Naročena vozila</h2><button className="secondary" disabled={loading || Boolean(busy)} onClick={() => setRevision(value => value + 1)}>Osveži razpored</button></div>
+    <div className="section-heading"><h2>Naročena vozila</h2><button type="button" className="secondary" disabled={loading || Boolean(busy)} onClick={() => setRevision(value => value + 1)}>Osveži razpored</button></div>
     <p className="muted">Časi so prikazani v Europe/Ljubljana. Na postaji lahko poteka en pregled hkrati.</p>
     {error && <p role="alert" className="alert error">{error}</p>}
     {loading ? <p role="status">Nalaganje razporeda …</p> : rows.length === 0 && !error ? <p className="panel">Ni rezervacij.</p> : <div className="vehicle-grid">{rows.map(row => <article className="panel" key={row.id}>
@@ -64,9 +64,9 @@ export function InspectorDashboard({ token, onDirtyChange }: { token: string; on
       <p>{dateTime(row.startsAt)}–{time(row.endsAt)} <span className="badge">{labels[row.status]}</span></p>
       <p className="muted">Letnik {row.year} · VIN {row.vin}</p>
       {row.overdue && <p className="locked">Pregled presega načrtovani konec termina.</p>}
-      {row.status === 'BOOKED' && <><button className="primary" disabled={!row.canStart || Boolean(busy)} onClick={() => void start(row.id)}>{busy === row.id ? 'Prevzemanje …' : 'Začni pregled'}</button>
+      {row.status === 'BOOKED' && <><button type="button" className="primary" disabled={!row.canStart || Boolean(busy)} onClick={() => void start(row.id)}>{busy === row.id ? 'Prevzemanje …' : 'Začni pregled'}</button>
         {!row.canStart && <p className="muted">{row.stationBusy ? 'Začetek ni mogoč: pregledno mesto je zasedeno.' : 'Prevzem bo mogoč ob začetku termina.'}</p>}</>}
-      {row.inspectionId && row.isMine && <button className="secondary" disabled={Boolean(busy)} onClick={() => setSelected(row.inspectionId)}>{row.status === 'IN_PROGRESS' ? 'Nadaljuj pregled' : 'Odpri zaključen pregled'}</button>}
+      {row.inspectionId && row.isMine && <button type="button" className="secondary" disabled={Boolean(busy)} onClick={() => setSelected(row.inspectionId)}>{row.status === 'IN_PROGRESS' ? 'Nadaljuj pregled' : 'Odpri zaključen pregled'}</button>}
       {row.status === 'IN_PROGRESS' && !row.isMine && <p className="muted">Pregled je prevzel drug preglednik.</p>}
     </article>)}</div>}
   </section>;

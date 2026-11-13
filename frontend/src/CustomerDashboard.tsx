@@ -44,13 +44,13 @@ export function CustomerDashboard({ token }: { token: string }) {
   }
 
   return <div className="dashboard">
-    <div className="section-heading"><h2>Vozila</h2><div className="actions"><button className="secondary" onClick={() => setRevision(value => value + 1)} disabled={loading || busy}>Osveži</button><button className="primary" onClick={() => setEditing('new')} disabled={busy}>Dodaj vozilo</button></div></div>
+    <div className="section-heading"><h2>Vozila</h2><div className="actions"><button type="button" className="secondary" onClick={() => setRevision(value => value + 1)} disabled={loading || busy}>Osveži</button><button type="button" className="primary" onClick={() => setEditing('new')} disabled={busy}>Dodaj vozilo</button></div></div>
     {editing && <VehicleForm key={editing === 'new' ? 'new' : editing.id} token={token} vehicle={editing === 'new' ? undefined : editing} onSaved={() => { setEditing(null); setRevision(value => value + 1); }} onCancel={() => setEditing(null)} />}
     {error && <p role="alert" className="alert error">{error}</p>}
     {loading ? <p role="status">Nalaganje vozil in terminov …</p> : !error && (vehicles.length ? <div className="vehicle-grid">{vehicles.map(vehicle => <article className="panel vehicle-card" key={vehicle.id}>
       <p className="registration">{vehicle.registrationNumber}</p><h3>{vehicle.manufacturer} {vehicle.model}</h3>
       <p className="muted">Letnik {vehicle.year}<br /><span className="vin">VIN {vehicle.vin}</span></p>
-      {vehicle.canEdit ? <button className="secondary" disabled={busy} onClick={() => setEditing(vehicle)}>Popravi podatke</button> : <p className="locked">Podatki so zaklenjeni, ker ima vozilo že rezervacijo.</p>}
+      {vehicle.canEdit ? <button type="button" className="secondary" disabled={busy} onClick={() => setEditing(vehicle)}>Popravi podatke</button> : <p className="locked">Podatki so zaklenjeni, ker ima vozilo že rezervacijo.</p>}
       {!vehicle.canReserve && <p className="muted">Vozilo ima odprto rezervacijo.</p>}
     </article>)}</div> : <p className="panel">Še nimate vnesenega vozila. Izberite »Dodaj vozilo«, da ga boste lahko naročili na pregled.</p>)}
 
@@ -64,7 +64,7 @@ export function CustomerDashboard({ token }: { token: string }) {
         <div className="field"><label htmlFor="booking-vehicle">Vozilo za pregled</label><select id="booking-vehicle" value={vehicleId} onChange={e => setVehicleId(e.target.value)} disabled={loading || busy || Boolean(error)}><option value="">Izberite vozilo</option>{vehicles.filter(v => v.canReserve).map(v => <option key={v.id} value={v.id}>{v.registrationNumber} · {v.manufacturer} {v.model}</option>)}</select></div>
         <div className="field"><label htmlFor="booking-slot">Prosti termin</label><select id="booking-slot" value={slotId} onChange={e => setSlotId(e.target.value)} disabled={loading || busy || Boolean(error)}><option value="">Izberite termin</option>{slots.map(s => <option key={s.id} value={s.id}>{dateTime(s.startsAt)}–{time(s.endsAt)}</option>)}</select></div>
       </div>
-      <button className="primary" disabled={!vehicleId || !slotId || busy || loading || Boolean(error)} onClick={reserve}>{busy ? 'Potrjevanje …' : 'Potrdi rezervacijo'}</button>
+      <button type="button" className="primary" disabled={!vehicleId || !slotId || busy || loading || Boolean(error)} onClick={reserve}>{busy ? 'Potrjevanje …' : 'Potrdi rezervacijo'}</button>
     </section>
     <MyAppointments token={token} revision={revision} onRefresh={() => setRevision(value => value + 1)} />
     <VehicleHistory vehicles={vehicles} token={token} />

@@ -1,0 +1,12 @@
+{
+  "files": { "includes": ["src/**"] },
+  "formatter": { "enabled": false },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "style": "off",
+      "correctness": { "useExhaustiveDependencies": "off" }
+    }
+  }
+}

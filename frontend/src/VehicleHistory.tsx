@@ -30,9 +30,9 @@ export function VehicleHistory({ vehicles, token }: { vehicles: Vehicle[]; token
   }, [detailId, token]);
   return <section className="panel booking-panel" aria-label="Zgodovina vozila"><h2>Zgodovina pregledov</h2>
     <div className="field"><label htmlFor="history-vehicle">Vozilo za zgodovino</label><select id="history-vehicle" value={vehicleId} onChange={e => { setVehicleId(e.target.value); setDetailId(''); setDetail(null); setHistory([]); }}><option value="">Izberite vozilo</option>{vehicles.map(v => <option key={v.id} value={v.id}>{v.registrationNumber} · {v.manufacturer} {v.model}</option>)}</select></div>
-    <button className="secondary" disabled={!vehicleId || loading} onClick={() => setRevision(v => v + 1)}>Osveži zgodovino</button>
+    <button type="button" className="secondary" disabled={!vehicleId || loading} onClick={() => setRevision(v => v + 1)}>Osveži zgodovino</button>
     {error && <p role="alert" className="alert error">{error}</p>}
-    {loading ? <p role="status">Nalaganje zgodovine …</p> : vehicleId && !error && (history.length ? <ul className="slot-list">{history.map(entry => <li key={entry.id}><button className="text-button" onClick={() => setDetailId(entry.id)}>{dateTime(entry.completedAt)} · {entry.finalResult}</button></li>)}</ul> : <p>Vozilo še nima zaključenih pregledov.</p>)}
+    {loading ? <p role="status">Nalaganje zgodovine …</p> : vehicleId && !error && (history.length ? <ul className="slot-list">{history.map(entry => <li key={entry.id}><button type="button" className="text-button" onClick={() => setDetailId(entry.id)}>{dateTime(entry.completedAt)} · {entry.finalResult}</button></li>)}</ul> : <p>Vozilo še nima zaključenih pregledov.</p>)}
     {detailError && <p role="alert" className="alert error">{detailError}</p>}
     {detailId && !detail && !detailError && <p role="status">Nalaganje ugotovitev …</p>}
     {detail && <article aria-label="Ugotovitve pregleda"><h3>{detail.registrationNumber} · {detail.manufacturer} {detail.model}</h3><p>Letnik {detail.year} · VIN {detail.vin}</p>

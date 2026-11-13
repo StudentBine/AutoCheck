@@ -101,10 +101,10 @@ function SignedApp({ client }: { client: SupabaseClient }) {
   </div>;
 
   return <main className="workspace">
-    <div className="workspace-top"><span className="eyebrow">UPORABNIŠKI PROSTOR</span><button className="secondary" onClick={signOut} disabled={signingOut}>{signingOut ? 'Odjava …' : 'Odjava'}</button></div>
+    <div className="workspace-top"><span className="eyebrow">UPORABNIŠKI PROSTOR</span><button type="button" className="secondary" onClick={signOut} disabled={signingOut}>{signingOut ? 'Odjava …' : 'Odjava'}</button></div>
     {error ? <section className="panel"><p role="alert" className="alert error">{error}</p>
-      <button className="secondary" onClick={() => setRetry(value => value + 1)}>Poskusi ponovno</button>{' '}
-      <button className="text-button" onClick={() => { window.history.replaceState(null, '', '/'); setPath('/'); }}>Moja začetna stran</button>
+      <button type="button" className="secondary" onClick={() => setRetry(value => value + 1)}>Poskusi ponovno</button>{' '}
+      <button type="button" className="text-button" onClick={() => { window.history.replaceState(null, '', '/'); setPath('/'); }}>Moja začetna stran</button>
     </section> : !profile ? <p role="status">Nalaganje profila …</p> : <>
       <h1>{areas[profile.role].title}</h1>
       <p className="welcome">Pozdravljeni, <strong>{profile.name}</strong>. <span className="badge">{areas[profile.role].label}</span></p>

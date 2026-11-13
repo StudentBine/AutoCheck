@@ -1,0 +1,5 @@
+{
+  "files": { "includes": ["src/**", "test/**"] },
+  "formatter": { "enabled": false },
+  "linter": { "enabled": true, "rules": { "recommended": true } }
+}

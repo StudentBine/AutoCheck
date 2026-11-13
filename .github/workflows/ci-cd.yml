@@ -1,3 +1,4 @@
+# Sproži se ob pr, zažene lint, 2x se zažene (enkrat za backend, enkrat za frontend)
 name: CI/CD
 on:
   pull_request:
@@ -27,4 +28,30 @@ jobs:
       - run: npm ci
       - run: npm run lint
 
-# Sproži se ob pr, zažene lint, 2x se zažene (enkrat za backend, enkrat za frontend)
+  # Build job se zažene po uspešnem lintu, da se prepreči nepotrebno gradnjo, če je koda neveljavna
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: [backend, frontend]
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ matrix.directory }}/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.directory }}-build
+          path: |
+            ${{ matrix.directory }}/dist
+            ${{ matrix.directory }}/package.json
+            ${{ matrix.directory }}/package-lock.json
+          if-no-files-found: error
+          retention-days: 7

@@ -18,7 +18,7 @@ export function MyAppointments({ token, revision, onRefresh }: { token: string; 
     return () => controller.abort();
   }, [token, revision]);
   return <section className="panel" aria-labelledby="my-appointments-title">
-    <div className="section-heading"><h2 id="my-appointments-title">Moje odprte rezervacije</h2><button className="secondary" disabled={loading} onClick={onRefresh}>Osveži rezervacije</button></div>
+    <div className="section-heading"><h2 id="my-appointments-title">Moje odprte rezervacije</h2><button type="button" className="secondary" disabled={loading} onClick={onRefresh}>Osveži rezervacije</button></div>
     <p className="muted">Termini so prikazani v časovnem pasu Europe/Ljubljana. Zaključene preglede najdete v zgodovini vozila.</p>
     {loading ? <p role="status">Nalaganje rezervacij …</p> : error ? <p role="alert" className="alert error">{error}</p> : rows.length ? rows.map(row => <article key={row.id} className="panel">
       <h3>{row.registrationNumber} · {row.manufacturer} {row.model}</h3>

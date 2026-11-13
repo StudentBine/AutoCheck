@@ -23,7 +23,7 @@ export function DefectsEditor({ initial, token, inspectionId, itemId, result, ca
     {!readOnly && <><div className="field"><label htmlFor={`new-defect-${itemId}`}>Opis nove napake</label><textarea id={`new-defect-${itemId}`} maxLength={2000} value={draft} disabled={busy} onChange={e => setDraft(e.target.value)} /></div>
       <div className="field"><label htmlFor={`new-severity-${itemId}`}>Resnost nove napake</label><select id={`new-severity-${itemId}`} value={severity} disabled={busy} onChange={e => setSeverity(e.target.value as Defect['severity'])}><option value="MINOR">Manjša (MINOR)</option><option value="MAJOR">Večja (MAJOR)</option></select></div>
       {!canAdd && <p className="muted">Za dodajanje napake najprej shranite oceno Neustrezno (FAIL).</p>}
-      <button className="secondary" disabled={busy || !canAdd || !draft.trim()} onClick={() => void add()}>Dodaj napako</button></>}
+      <button type="button" className="secondary" disabled={busy || !canAdd || !draft.trim()} onClick={() => void add()}>Dodaj napako</button></>}
     {error && <p role="alert" className="alert error">{error}</p>}
   </div>;
 }
@@ -39,7 +39,7 @@ function DefectEntry({ defect, token, inspectionId, readOnly, onChange, onDirty 
   if (readOnly) return <p>{defect.description} <span className="badge">{defect.severity}</span></p>;
   return <div className="panel"><div className="field"><label htmlFor={`defect-${defect.id}`}>Opis napake</label><textarea id={`defect-${defect.id}`} maxLength={2000} value={description} disabled={busy} onChange={e => setDescription(e.target.value)} /></div>
     <div className="field"><label htmlFor={`severity-${defect.id}`}>Resnost napake</label><select id={`severity-${defect.id}`} value={severity} disabled={busy} onChange={e => setSeverity(e.target.value as Defect['severity'])}><option value="MINOR">Manjša (MINOR)</option><option value="MAJOR">Večja (MAJOR)</option></select></div>
-    <div className="actions"><button className="secondary" disabled={busy || !dirty || !description.trim()} onClick={() => void save()}>Shrani napako</button><button className="secondary" disabled={busy} onClick={() => void save(true)}>Odstrani napako</button></div>
+    <div className="actions"><button type="button" className="secondary" disabled={busy || !dirty || !description.trim()} onClick={() => void save()}>Shrani napako</button><button type="button" className="secondary" disabled={busy} onClick={() => void save(true)}>Odstrani napako</button></div>
     {error && <p role="alert" className="alert error">{error}</p>}
   </div>;
 }

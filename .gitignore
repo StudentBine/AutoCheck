@@ -36,3 +36,7 @@ Thumbs.db
 Desktop.ini
 
 # Dokumentacije, slik in package-lock.json ne izključujemo.
+
+
+# Dodana certs
+certs/

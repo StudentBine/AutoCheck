@@ -77,7 +77,7 @@ export function AuthForm({ client }: { client: SupabaseClient }) {
       </div>
       {error && <p role="alert" className="alert error">{error}</p>}
       {notice && <p role="status" className="alert success">{notice}</p>}
-      <button type="submit" className="primary full" disabled={busy}>{busy ? 'Počakajte …' : register ? 'Ustvari račun' : 'Prijava'}</button>
+      <button className="primary full" disabled={busy}>
     </form>
     <p className="switch-mode">{register ? 'Že imate račun?' : 'Še nimate računa?'}{' '}
       <button type="button" className="text-button" disabled={busy} onClick={() => { setRegister(!register); setError(''); setNotice(''); setFields({}); setPassword(''); }}>

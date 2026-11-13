@@ -55,3 +55,30 @@ jobs:
             ${{ matrix.directory }}/package-lock.json
           if-no-files-found: error
           retention-days: 7
+
+  # Test job se zažene po uspešnem buildanju, da se prepreči nepotrebno testiranje, če gradnja ni uspela
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        directory: [backend, frontend]
+    defaults:
+      run:
+        working-directory: ${{ matrix.directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ matrix.directory }}/package-lock.json
+      - run: npm ci
+      - run: mkdir -p coverage
+      - run: npm run test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ matrix.directory }}-coverage
+          path: ${{ matrix.directory }}/coverage
+          if-no-files-found: error
+          retention-days: 7

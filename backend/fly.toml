@@ -1,0 +1,23 @@
+app = "autocheck-api-studentbine"
+primary_region = "ams"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "3000"
+  DATABASE_CA_CERT_PATH = "./certs/prod-ca-2021.crt"
+  CORS_ORIGIN = "https://autocheck-studentbine.netlify.app"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    method = "GET"
+    path = "/api/health"
+    interval = "30s"
+    timeout = "5s"

@@ -4,7 +4,7 @@ export class ApiError extends Error {
   constructor(message: string, public status: number, public field?: string) { super(message); }
 }
 export async function api<T>(path: string, token: string, options: { method?: string; body?: unknown; signal?: AbortSignal } = {}): Promise<T> {
-  const response = await fetch(`/api${path}`, {
+  const response = await fetch(`${import.meta.env.VITE_API_URL ?? ''}/api${path}`, {
     method: options.method ?? 'GET', signal: options.signal,
     headers: { Authorization: `Bearer ${token}`, ...(options.body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
     ...(options.body !== undefined ? { body: JSON.stringify(options.body) } : {}),

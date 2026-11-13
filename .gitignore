@@ -39,4 +39,8 @@ Desktop.ini
 
 
 # Dodana certs
-certs/
+certs/*
+!certs/prod-ca-2021.crt
+
+# Local Netlify folder
+.netlify

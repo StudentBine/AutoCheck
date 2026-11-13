@@ -46,6 +46,10 @@ jobs:
           cache-dependency-path: ${{ matrix.directory }}/package-lock.json
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.directory }}-build
@@ -82,3 +86,31 @@ jobs:
           path: ${{ matrix.directory }}/coverage
           if-no-files-found: error
           retention-days: 7
+
+  # Deploy job se zažene po uspešnem testiranju, da se prepreči nepotrebno nameščanje, če testi niso uspeli
+  deploy:
+    needs: [lint, build, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend
+      - uses: actions/download-artifact@v4
+        with:
+          name: backend-build
+          path: backend
+      - name: Namestitev frontenda na Netlify
+        run: npx netlify-cli deploy --dir=frontend/dist --prod
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Namestitev backenda na Fly.io
+        run: flyctl deploy --remote-only
+        working-directory: backend
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

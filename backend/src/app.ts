@@ -13,6 +13,15 @@ export function createApp(deps: { verifyToken: VerifyToken; profiles: ProfileSto
   const app = express();
   app.disable('x-powered-by');
   // A checklist combines all previously separate, individually bounded notes.
+  const corsOrigin = process.env.CORS_ORIGIN;
+  if (corsOrigin) app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', corsOrigin);
+    res.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
+    if (req.method === 'OPTIONS') { res.sendStatus(204); return; }
+    next();
+  });
+
   app.use('/api/inspections/:id/checklist', express.json({ limit: '256kb' }));
   app.use(express.json({ limit: '10kb' }));
   app.get('/api/health', (_req, res) => { res.json({ status: 'ok' }); });

@@ -1,5 +1,11 @@
 ﻿# AutoCheck
 
+[![CI/CD](https://github.com/StudentBine/AutoCheck/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/StudentBine/AutoCheck/actions/workflows/ci-cd.yml)
+
+**Nameščena aplikacija:** https://autocheck-studentbine.netlify.app  
+**API (backend):** https://autocheck-api-studentbine.fly.dev/api/health
+
+
 Študijska aplikacija za naročanje in evidentiranje tehničnih pregledov na eni manjši postaji. Frontend uporablja **React + TypeScript + Vite**, backend **Node.js + Express + TypeScript**, prijavo in PostgreSQL pa zagotavlja **Supabase**.
 
 ## Trenutni obseg
@@ -128,6 +134,22 @@ Preveden backend: `npm --prefix backend start`. Predogled prevedenega frontenda:
 - **Profil se ne naloži:** preveri backend, izvedbo SQL sheme, geslo baze in povezavo Session pooler.
 - **Napaka certifikata:** nastavi pravi CA certifikat; ne izklapljaj preverjanja TLS.
 - **Zasedena vrata:** ustavi stari proces; frontend ne preklopi samodejno na drug port.
+
+## CI/CD (GitHub Actions)
+
+Cevovod je v `.github/workflows/ci-cd.yml`. Sproži se ob vsakem pull requestu v `main` in ob vsakem pushu na `main`. Veja `main` je zaščitena: združitev je mogoča samo prek pull requesta, ko so vse preverbe zelene.
+
+| Faza | Kaj naredi |
+|---|---|
+| **lint** | Biome preveri kakovost kode frontenda in backenda (`npm run lint`). Če najde napako, faza pade. |
+| **build** | Zgradi frontend (`tsc` + Vite) in backend (`tsc`). Odvisnosti se predpomnijo (`setup-node` z `cache: npm`). Rezultat (`dist/`) se shrani kot artefakta `frontend-build` in `backend-build`. |
+| **test** | Požene teste frontenda (Vitest) in backenda (Node test runner) s poročilom o pokritosti, ki se shrani kot artefakt. Če kateri test pade, pade cevovod. |
+| **deploy** | Samo ob pushu na `main` in samo če so `lint`, `build` in `test` uspešni. Prenese artefakte iz faze `build` (ničesar ne gradi znova), namesti frontend na **Netlify** in backend na **Fly.io**. Teče v okolju `production`, žetoni so v GitHub Secrets. |
+
+Frontend je z backendom povezan prek spremenljivke `VITE_API_URL` (GitHub Actions *Variables*), vgrajene v frontend ob gradnji. Baza in prijava ostajata v Supabase.
+
+
+
 
 ## Struktura repozitorija
 
